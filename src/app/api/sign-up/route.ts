@@ -30,20 +30,37 @@ export async function POST(request: Request) {
     if (existingUserByEmail) {
       if (existingUserByEmail.isVerified) {
         return Response.json(
-          { success: false, message: "User already exist with this email"},
+          { success: false, message: "User already exist with this email" },
           { status: 400 }
         );
       } else {
-         const hashedPassword = await bcrypt.hash(password, 10);
-         existingUserByEmail.password = hashedPassword;
-         existingUserByEmail.verifyCode = verifyCode;
-         existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000)
-         await existingUserByEmail.save();
+        const hashedPassword = await bcrypt.hash(password, 10);
+        existingUserByEmail.password = hashedPassword;
+        existingUserByEmail.username = username;
+        existingUserByEmail.verifyCode = verifyCode;
+        existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
+        await existingUserByEmail.save();
+
+        // send verification email
+        const response = await sendVerificationEmail(
+          email,
+          username,
+          verifyCode
+        );
+        if (!response.success) {
+          return Response.json(
+            {
+              success: false,
+              message: response.message,
+            },
+            { status: 500 }
+          );
+        }
       }
     } else {
       // create new user
       const hashedPassword = await bcrypt.hash(password, 10);
-      
+
       // new object can not assign in this const veriable but methods and properties can change
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
@@ -77,15 +94,14 @@ export async function POST(request: Request) {
           { status: 500 }
         );
       }
-
-      return Response.json(
-        {
-          success: true,
-          message: "User registered successfully. Please verify email",
-        },
-        { status: 201 }
-      );
     }
+    return Response.json(
+      {
+        success: true,
+        message: "User registered successfully. Please verify email",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.log("Error registering user", error);
     return Response.json(
