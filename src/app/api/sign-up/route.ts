@@ -42,7 +42,8 @@ export async function POST(request: Request) {
       }
     } else {
       // create new user
-      const hashedPassword = bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
       // new object can not assign in this const veriable but methods and properties can change
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
