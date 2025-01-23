@@ -15,15 +15,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any): Promise<any> {
-        await dbConnect()
+        await dbConnect();
         try {
           // Fetch the user by email
-          const user = await UserModel.findOne({ 
+          const user = await UserModel.findOne({
             $or: [
-                {email: credentials.identifier},
-                {username: credentials.identifier}
-            ]
-           });
+              { email: credentials.identifier },
+              { username: credentials.identifier },
+            ],
+          });
 
           if (!user) {
             throw new Error("No user found with this email");

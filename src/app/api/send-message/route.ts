@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     }
 
     // is user accepting messages
-    if (!user.isAcceptiongMessage) {
+    if (!user.isAcceptingMessages) {
       return Response.json(
         { success: false, message: "User not accepting the messages" },
         { status: 401 }
