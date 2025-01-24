@@ -35,7 +35,7 @@ export async function GET() {
       {
         $group: {
           _id: "$_id",
-          message: {
+          messages: {
             $push: "$messages",
           },
         },
@@ -50,8 +50,8 @@ export async function GET() {
     }
 
     return Response.json(
-      { success: true, messages: user[0].messages },
-      { status: 401 }
+      { success: true, messages: user },
+      { status: 200 }
     );
   } catch (error) {
     console.log("An unexpeced error occured", error);

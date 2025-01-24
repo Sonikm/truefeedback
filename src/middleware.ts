@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   // If the user is logged in and accessing public routes, redirect to dashboard
   if (
     token &&
-    ["/sign-in", "/sign-up", "/verify-email", "/"].some((path) =>
+    ["/sign-in", "/sign-up", "/verify-code", "/"].some((path) =>
       url.pathname.startsWith(path)
     ) &&
     !url.pathname.startsWith("/dashboard")
@@ -34,6 +34,6 @@ export const config = {
     "/",
     "/dashboard/:path*",
     "/dashboard",
-    "/verify-email/:path*",
+    "/verify-code/:path*",
   ],
 };

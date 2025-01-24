@@ -51,7 +51,8 @@ const VerifyAccount = () => {
 
       router.replace("/sign-in");
     } catch (error) {
-      console.error("Error in verification:", error);
+
+      console.log("Error in verification:", error.message);
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage =
         axiosError.response?.data.message || "An unexpected error occurred";

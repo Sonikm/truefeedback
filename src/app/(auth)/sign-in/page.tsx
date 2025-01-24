@@ -35,11 +35,10 @@ function SignInPage() {
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
 
     const result = await signIn("credentials", {
+      redirect: false,
       identifier: data.identifier,
       password: data.password,
     });
-
-    console.log(result);
 
     if (result?.error) {
       toast({
@@ -72,7 +71,7 @@ function SignInPage() {
                 <FormItem>
                   <FormLabel>Email/Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="email/username" {...field} />
+                    <Input required placeholder="email/username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +84,7 @@ function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="password" {...field} />
+                    <Input required type="password" placeholder="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +95,7 @@ function SignInPage() {
         </Form>
         <div className="text-center mt-4">
           <div>
-            Dont have an account? 
+            Dont have an account?
             <Link
               href={"/sign-up"}
               className="text-blue-600 hover:text-blue-800"

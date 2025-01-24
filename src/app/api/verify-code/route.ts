@@ -30,18 +30,18 @@ export async function POST(request: Request) {
         { success: true, message: "Account verified successfully" },
         { status: 200 }
       );
-    } else if (!isCodeNotExpired) {
+    } else if (!isCodeValid) {
+      return Response.json(
+        { success: false, message: "Incorrect Verification code." },
+        { status: 400 }
+      );
+    } else {
       return Response.json(
         {
           success: false,
           message:
             "Verification code has expired, please signup again to get a new code",
         },
-        { status: 400 }
-      );
-    } else {
-      return Response.json(
-        { success: false, message: "Incorrect Verification code." },
         { status: 400 }
       );
     }

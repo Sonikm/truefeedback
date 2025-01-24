@@ -72,6 +72,8 @@ export async function GET() {
     );
   }
 
+  console.log(user);
+
   const userId = user._id;
 
   try {

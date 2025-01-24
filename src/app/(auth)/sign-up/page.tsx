@@ -77,9 +77,9 @@ function SignUpPage() {
         description: response.data.message,
       });
 
-      router.replace(`/verify-email/${username}`);
+      router.replace(`/verify-code/${username}`);
     } catch (error) {
-      console.error("Error in signup of user", error);
+      console.log("Error in signup of user", error);
       const axiosError = error as AxiosError<ApiResponse>;
       const errorMessage = axiosError.response?.data.message;
       toast({

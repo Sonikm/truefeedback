@@ -2,13 +2,13 @@
 
 import MessageCard from "@/components/MessageCard";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { Message } from "@/model/userModel";
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@radix-ui/react-separator";
-import { Switch } from "@radix-ui/react-switch";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { User } from "next-auth";
@@ -62,6 +62,7 @@ const Dashboard = () => {
         const response = await axios.get<ApiResponse>("/api/get-messages");
         setMessages(response.data.messages || []);
 
+
         if (refresh) {
           toast({
             title: "Refreshed Messages",
@@ -70,6 +71,7 @@ const Dashboard = () => {
         }
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>;
+        console.log("error : ", error);
         toast({
           title: "Error",
           description:
@@ -116,7 +118,7 @@ const Dashboard = () => {
 
   if (!session || !session.user || !user.username) return;
 
-  // TODO: do more research 
+  // TODO: do more research
   // BASE_URL=http://localhost:3000
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${user.username}`;
@@ -132,6 +134,8 @@ const Dashboard = () => {
   if (!session || !session.user || !user.username) {
     return <div>Please login</div>;
   }
+
+  console.log("messages data: ", messages);
 
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">

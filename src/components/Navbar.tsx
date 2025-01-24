@@ -8,9 +8,9 @@ const Navbar = () => {
   const { data: session, status } = useSession();
   const user: User = session?.user as User;
 
-  if (status === "authenticated") {
-    return <p>Signed in as {user.email}</p>;
-  }
+  // if (status === "authenticated") {
+  //   return <p>Signed in as {user.email}</p>;
+  // }
 
   return (
     <nav className="p-4 md:p-6 shadow-md">
