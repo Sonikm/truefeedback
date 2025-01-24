@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { signInSchema } from "@/schemas/signInSchema";
@@ -21,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 
 function SignInPage() {
-  const [isSubmitting, ] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -35,10 +33,8 @@ function SignInPage() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    // setIsSubmitting(true);
 
     const result = await signIn("credentials", {
-      redirect: false,
       identifier: data.identifier,
       password: data.password,
     });
@@ -95,14 +91,12 @@ function SignInPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>
-              Signin
-            </Button>
+            <Button type="submit">Sign In</Button>
           </form>
         </Form>
         <div className="text-center mt-4">
           <div>
-            Dont have an account?
+            Dont have an account? 
             <Link
               href={"/sign-up"}
               className="text-blue-600 hover:text-blue-800"

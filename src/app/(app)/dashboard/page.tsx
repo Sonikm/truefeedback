@@ -112,11 +112,14 @@ const Dashboard = () => {
     }
   };
 
-  const { username } = session?.user as User;
+  const user = session?.user as User;
 
-  // TODO: do more research
+  if (!session || !session.user || !user.username) return;
+
+  // TODO: do more research 
+  // BASE_URL=http://localhost:3000
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
+  const profileUrl = `${baseUrl}/u/${user.username}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -126,7 +129,7 @@ const Dashboard = () => {
     });
   };
 
-  if (!session || !session.user) {
+  if (!session || !session.user || !user.username) {
     return <div>Please login</div>;
   }
 

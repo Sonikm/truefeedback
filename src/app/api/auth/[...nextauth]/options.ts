@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any): Promise<any> {
@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id;
-        session.user.isAcceptingMessages = token.isVerified;
+        session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
         session.user.username = token.username;
       }

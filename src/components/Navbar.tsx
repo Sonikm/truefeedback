@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className="p-4 md:p-6 shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <h2 className="text-xl font-bold mb-4 md:mb-0 mx-4">Mystry Message</h2>
-        <Link href="">
+        <div>
           {session && user ? (
             <>
               <span className="mr-4 ">
@@ -33,7 +33,7 @@ const Navbar = () => {
               </Link>
             </>
           )}
-        </Link>
+        </div>
       </div>
     </nav>
   );

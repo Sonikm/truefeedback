@@ -71,8 +71,8 @@ export async function POST(request: Request) {
         password: hashedPassword,
         verifyCode,
         verifyCodeExpiry: expiryDate,
-        isAcceptionMessage: true,
-        message: [],
+        isAcceptingMessages: true,
+        messages: [],
         isVerified: false,
       });
 
