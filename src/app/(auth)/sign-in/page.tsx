@@ -33,7 +33,6 @@ function SignInPage() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-
     const result = await signIn("credentials", {
       redirect: false,
       identifier: data.identifier,
@@ -54,11 +53,11 @@ function SignInPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center bg-gray-900  items-center min-h-screen ">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tighter lg:text-5xl mb-6">
-            Join Mystery Message
+            Join True Feedback
           </h1>
           <p className="mb-4">Sign in to start your anonymous adventure</p>
         </div>
@@ -84,7 +83,12 @@ function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input required type="password" placeholder="password" {...field} />
+                    <Input
+                      required
+                      type="password"
+                      placeholder="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

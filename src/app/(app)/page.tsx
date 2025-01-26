@@ -1,66 +1,92 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import messages from "@/data/messages.json";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { MessageCircle, Shield, Zap, ArrowRight } from "lucide-react"; // Assuming you have an icon for messages
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
+import MessageSlider from "@/components/MessageSlider";
 
-const Home = () => {
-  // const [emblaRef] = useEmblaCarousel({ loop: false }, [
-  //   Autoplay({ delay: 2000, jump: true }),
-  // ]);
+export default function Home() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "authenticated") {
+    router.push("/dashboard");
+  }
 
   return (
     <>
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12">
-        <section className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold">
-            Dive into the World of Anonymous Conversations
-          </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg">
-            Explore Mystery Message - Where your identity remains a secret.
-          </p>
-        </section>
-
-        <Carousel
-          plugins={[Autoplay({ delay: 4000 })]}
-          className="w-full max-w-xs"
-        >
-          <CarouselContent>
-            {messages.map((message) => (
-              <CarouselItem key={message.title}>
-                <div className="p-1">
-                  <Card>
-                    <CardHeader>{message.title}</CardHeader>
-                    <CardContent className="flex items-center justify-center p-6">
-                      {message.content}
-                    </CardContent>
-                    <CardFooter>{message.received}</CardFooter>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </main>
-      <footer className="text-center p-4 md:p-5 bg-gray-100">
-        &#169; {new Date().getFullYear()} Mystery Message. All rights reserved.
-      </footer>
+      <div className="relative overflow-hidden bg-gray-900">
+        <div
+          className="absolute inset-0 bg-grid-gray-700/20 bg-[size:20px_20px]"
+          style={{
+            maskImage: "radial-gradient(gray, transparent)",
+            WebkitMaskImage: "radial-gradient(gray, transparent)",
+          }}
+        ></div>
+        <div className="relative container mx-auto px-4 py-20 sm:px-6 sm:py-32 lg:px-8">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8">
+            <div className="flex flex-col justify-center space-y-8 text-center lg:text-left">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-100 sm:text-4xl mb-2">
+                  TrueFeedback
+                </h2>
+                <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-6xl xl:text-7xl">
+                  Honest Feedback,{" "}
+                  <span className="text-blue-400">Anonymously</span>
+                </h1>
+              </div>
+              <p className="mx-auto max-w-2xl text-lg text-gray-300 lg:mx-0 xl:text-xl">
+                TrueFeedback empowers users to provide genuine, constructive
+                insights without revealing their identity. Create a space for
+                unfiltered truth and drive positive change.
+              </p>
+              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
+                <Link href="/sign-up">
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto bg-blue-500 text-white hover:bg-blue-600"
+                  >
+                    Signup
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full px-16 text-blue-500 sm:w-auto border-gray-600  hover:bg-gray-500"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {[
+                  { Icon: Shield, text: "100% Anonymous" },
+                  { Icon: MessageCircle, text: "Honest Insights" },
+                  { Icon: Zap, text: "Drive Change" },
+                ].map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-center space-x-2 rounded-lg bg-gray-800 p-3 border border-gray-700"
+                  >
+                    <feature.Icon className="h-6 w-6 text-blue-400" />
+                    <span className="text-sm font-medium text-gray-200">
+                      {feature.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <MessageSlider />
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black to-transparent"></div>
+        <Footer />
+      </div>
     </>
   );
-};
-
-export default Home;
+}

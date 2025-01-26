@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 const Navbar = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const user: User = session?.user as User;
 
   // if (status === "authenticated") {
@@ -13,10 +13,10 @@ const Navbar = () => {
   // }
 
   return (
-    <nav className="p-4 md:p-6 shadow-md">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <h2 className="text-xl font-bold mb-4 md:mb-0 mx-4">Mystry Message</h2>
-        <div>
+    <nav className="p-4 md:p-6 shadow-md bg-[#111827] text-white">
+      <div className="container mx-auto flex flex-row justify-between items-center">
+        <h2 className="text-xl font-bold mx-4">True Feedback</h2>
+        <div className="flex justify-center items-center ">
           {session && user ? (
             <>
               <span className="mr-4 ">
@@ -27,11 +27,9 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
-            <>
-              <Link href="/sign-in">
-                <Button className="w-full md:w-auto">Login</Button>
-              </Link>
-            </>
+            <Link href="/sign-in">
+              <Button className="w-full md:w-auto md:text-lg">Login</Button>
+            </Link>
           )}
         </div>
       </div>
