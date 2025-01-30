@@ -17,42 +17,50 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import AIGeneratedMessages from "@/components/AIGeneratedMessages";
+import { useParams } from "next/navigation";
+import { messageSchema } from "@/schemas/messageSchema";
+import { useToast } from "@/hooks/use-toast";
+import axios, { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
-const formSchema = z.object({
-  feedback: z
-    .string()
-    .min(2, {
-      message: "Feedback must be at least 2 characters.",
-    })
-    .max(200, {
-      message: "Feedback must be less than 200 characters.",
-    }),
-});
-
-const FeedbackPage = ({
-  params,
-}: {
-  params: Promise<{ username: string }>;
-}) => {
-  // State to store the username
+const FeedbackPage = () => {
   const [username, setUsername] = useState("");
-  const [disableBtn, setDisableBtn] = useState(true);
+  const { toast } = useToast();
+  const params = useParams<{ username: string }>();
 
-  // Fetch the username asynchronously
   useEffect(() => {
-    const fetchUsername = async () => {
-      const result = await params;
-      setUsername(result.username);
-    };
-    fetchUsername();
+    setUsername(params.username);
   }, [params]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof messageSchema>>({
+    resolver: zodResolver(messageSchema),
     defaultValues: {
-      feedback: "",
+      content: "",
     },
   });
+
+  const onSubmit = async (data: z.infer<typeof messageSchema>) => {
+    try {
+      const response = await axios.post(`/api/u/${username}`, {
+        message: data.content,
+        username,
+      });
+
+      toast({
+        title: "Success",
+        description: response.data.message,
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage =
+        axiosError.response?.data.message || "An unexpected error occurred";
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
 
   // If the username is not yet loaded, show a loader or placeholder
   if (!username) {
@@ -60,24 +68,28 @@ const FeedbackPage = ({
   }
 
   return (
-    <div className="flex items-center gap-8 flex-col min-h-screen mx-8 md:mx-2">
-      <h2 className="text-4xl font-bold lg:text-5xl mt-10 p-12">
+    <div className="flex items-center gap-6 md:gap-8 flex-col min-h-screen mx-8 md:mx-2">
+      <h2 className="md:text-4xl text-2xl whitespace-nowrap  font-bold lg:text-5xl md:mt-10 mt-4 p-8 md:p-12 ">
         Public Profile Link
       </h2>
 
       <Form {...form}>
-        <form className="max-w-3xl w-full flex flex-col justify-center">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="max-w-3xl w-full flex flex-col justify-center"
+        >
           <FormField
             control={form.control}
-            name="feedback"
+            name="content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold">
+                <FormLabel className="font-bold text-sm md:text-base">
                   Send Anonymous Message to @{username}
                 </FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
+                    className="placeholder:text-sm md:text-base"
                     placeholder="Write your anonymous message here"
                     id="message-2"
                   />
@@ -86,20 +98,18 @@ const FeedbackPage = ({
               </FormItem>
             )}
           />
-          <Button
-            disabled={disableBtn}
-            className="mt-8 p-5 w-auto self-center"
-            type="submit"
-          >
+          <Button className="md:mt-8 mt-5  p-5 w-auto self-center  " type="submit">
             Send it
           </Button>
         </form>
       </Form>
       <div className="flex max-w-3xl w-full flex-col gap-4 justify-start items-start">
-        <Button className="my-3">Suggest Messages</Button>
-        <p>Click on any message below to select it.</p>
+        <Button className="md:my-3 mt-3">Suggest Messages</Button>
+        <p className="text-sm md:text-base">
+          Click on any message below to select it.
+        </p>
         <AIGeneratedMessages />
-        <div className="flex w-full flex-col gap-4 justify-center items-center mb-8 ">
+        <div className="flex w-full flex-col gap-4 justify-center items-center mb-5 md:mb-8  md:text-base text-sm ">
           <Separator />
           <p>Get Your Message Board</p>
           <Link href="/sign-up">

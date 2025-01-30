@@ -2,23 +2,19 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel, { Message } from "@/model/userModel";
 import { NextResponse } from "next/server";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { username: string } }
-) {
+export async function POST(req: Request) {
   try {
     // Ensure database connection is established
     await dbConnect();
 
-    const { message } = await req.json();
-    const { username } = params;
+    const { message, username } = await req.json();
 
     // Find the user by username
     const user = await UserModel.findOne({ username });
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User does not exist to send feedback" },
+        { success: false, message: "This user is does not exist." },
         { status: 404 }
       );
     }
