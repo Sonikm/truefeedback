@@ -15,7 +15,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { SeparatorHorizontal } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import AIGeneratedMessages from "@/components/AIGeneratedMessages";
 
