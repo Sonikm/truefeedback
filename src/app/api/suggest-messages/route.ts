@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const prompt =
-      "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themens that encourage friendly inetraction. For example, your output should be structured like this: 'What's a simple thing that makes you happy?, What's a hobby you've recently started?||If you could have dinner with any historical figure, who whould it be?. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational envirenment.  ";
-
+      "Generate a unique list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should appeal to a diverse audience. Focus on universal themes that encourage friendly interaction, creativity, and curiosity. Avoid repeating questions and steer clear of personal or sensitive topics. Structure the output like this: 'What’s a new skill you'd love to learn?||What’s the best advice you’ve ever received?||If you could live in any fictional world, which would it be and why?'. Make sure each set of questions is distinct, intriguing, and fosters a welcoming conversational environment.";
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });

@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import AIGeneratedMessages from "@/components/AIGeneratedMessages";
@@ -24,13 +23,8 @@ import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 
 const FeedbackPage = () => {
-  const [username, setUsername] = useState("");
   const { toast } = useToast();
-  const params = useParams<{ username: string }>();
-
-  useEffect(() => {
-    setUsername(params.username);
-  }, [params]);
+  const { username } = useParams<{ username: string }>();
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -45,6 +39,11 @@ const FeedbackPage = () => {
         message: data.content,
         username,
       });
+
+      // reset feild
+      form.setValue("content", "");
+
+      console.log(data.content);
 
       toast({
         title: "Success",
@@ -63,8 +62,8 @@ const FeedbackPage = () => {
   };
 
   // If the username is not yet loaded, show a loader or placeholder
-  if (!username) {
-    return <div>Loading...</div>;
+  if (!username || username.trim() === "") {
+    return <div>Invalid or missing username. Please try again.</div>;
   }
 
   return (
@@ -91,24 +90,23 @@ const FeedbackPage = () => {
                     {...field}
                     className="placeholder:text-sm md:text-base"
                     placeholder="Write your anonymous message here"
-                    id="message-2"
+                    id="message"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="md:mt-8 mt-5  p-5 w-auto self-center  " type="submit">
+          <Button
+            className="md:mt-8 mt-5  p-5 w-auto self-center  "
+            type="submit"
+          >
             Send it
           </Button>
         </form>
       </Form>
       <div className="flex max-w-3xl w-full flex-col gap-4 justify-start items-start">
-        <Button className="md:my-3 mt-3">Suggest Messages</Button>
-        <p className="text-sm md:text-base">
-          Click on any message below to select it.
-        </p>
-        <AIGeneratedMessages />
+        <AIGeneratedMessages setMessage={form.setValue} />
         <div className="flex w-full flex-col gap-4 justify-center items-center mb-5 md:mb-8  md:text-base text-sm ">
           <Separator />
           <p>Get Your Message Board</p>
