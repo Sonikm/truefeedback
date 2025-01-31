@@ -15,9 +15,14 @@ import { formattedDate } from "@/helper/formattedDate";
 type MessageCardProps = {
   message: Message;
   onMessageDelete: (messageId: string) => void;
+  fetchMessages: () => void;
 };
 
-const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
+const MessageCard = ({
+  message,
+  onMessageDelete,
+  fetchMessages,
+}: MessageCardProps) => {
   const { toast } = useToast();
 
   const handleDeleteConfirm = async () => {
@@ -26,18 +31,19 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
     );
     toast({ title: response.data.message });
     onMessageDelete(message._id as string);
+    fetchMessages();
   };
-
-  // console.log(message.content);
 
   return (
     <Card>
       <CardHeader className="p-4 md:p-6">
         <CardContent className="flex p-2 md:p-6 justify-between flex-row items-center gap-4">
           <CardTitle className="md:text-xl">{message.content}</CardTitle>
-          <AlertDialogBox  handleDeleteConfirm={handleDeleteConfirm} />
+          <AlertDialogBox handleDeleteConfirm={handleDeleteConfirm} />
         </CardContent>
-        <CardFooter className="text-sm md:text-base">{formattedDate(message.createdAt)}</CardFooter>
+        <CardFooter className="text-sm md:text-base">
+          {formattedDate(message.createdAt)}
+        </CardFooter>
       </CardHeader>
     </Card>
   );

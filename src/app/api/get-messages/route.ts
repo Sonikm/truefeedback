@@ -42,12 +42,12 @@ export async function GET() {
       },
     ]);
 
-    if (!user || user.length === 0) {
-      return Response.json(
-        { success: false, message: "User not found" },
-        { status: 401 }
-      );
-    }
+    // if (!user || user.length === 0) {
+    //   return Response.json(
+    //     { success: false, message: "No Message yet" },
+    //     { status: 401 }
+    //   );
+    // }
 
     return Response.json(
       { success: true, messages: user },

@@ -189,10 +189,11 @@ const Dashboard = () => {
                 key={String(message._id) || index}
                 message={message}
                 onMessageDelete={handleDeleteMessage}
+                fetchMessages={fetchMessages}
               />
             ))
           ) : (
-            <p>No message to display.</p>
+            <div className="w-full font-semibold text-lg text-gray-400 m-10 text-center" >No message to display.</div>
           )}
         </div>
       </div>
