@@ -16,7 +16,7 @@ const AlertDialogBox = ({ handleDeleteConfirm }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">
+        <Button className="" variant="destructive">
           <X className="w-5 h-5" />
         </Button>
       </AlertDialogTrigger>
@@ -30,7 +30,7 @@ const AlertDialogBox = ({ handleDeleteConfirm }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDeleteConfirm}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleDeleteConfirm}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

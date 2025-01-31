@@ -60,8 +60,9 @@ const Dashboard = () => {
       setIsSwitchLoading(false);
       try {
         const response = await axios.get<ApiResponse>("/api/get-messages");
-        setMessages(response.data.messages || []);
-
+        // Safely access nested messages
+        const nestedMessages = response?.data?.messages?.[0]?.messages ?? [];
+        setMessages(nestedMessages);
 
         if (refresh) {
           toast({
@@ -83,7 +84,7 @@ const Dashboard = () => {
         setIsSwitchLoading(false);
       }
     },
-    [setIsLoading, setMessages, toast]
+    [setIsLoading, setMessages, toast, ]
   );
 
   useEffect(() => {
@@ -135,14 +136,14 @@ const Dashboard = () => {
     return <div>Please login</div>;
   }
 
-  console.log("messages data: ", messages);
+  // console.log("messages data: ", messages);
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+    <div className="my-8 mx-4 overflow-hidden md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+      <h1 className="md:text-4xl text-3xl font-bold mb-4">User Dashboard</h1>
 
       <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
+        <h2 className="md:text-lg font-semibold mb-2">Copy Your Unique Link</h2>
         <div className="flex items-center">
           <input
             type="text"

@@ -19,7 +19,7 @@ const Navbar = () => {
         <div className="flex justify-center items-center ">
           {session && user ? (
             <>
-              <span className="mr-4 ">
+              <span className="mr-4 hidden md:block">
                 Welcome, {user.username || user.email}
               </span>
               <Button className="w-full md:w-auto" onClick={() => signOut()}>

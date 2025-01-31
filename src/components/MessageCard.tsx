@@ -1,15 +1,16 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import AlertDialogBox from "./AlertDialogBox";
 import { Message } from "@/model/userModel";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
+import { formattedDate } from "@/helper/formattedDate";
 
 type MessageCardProps = {
   message: Message;
@@ -27,15 +28,17 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
     onMessageDelete(message._id as string);
   };
 
+  // console.log(message.content);
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <AlertDialogBox handleDeleteConfirm={handleDeleteConfirm} />
-
-        <CardDescription>Card Description</CardDescription>
+      <CardHeader className="p-4 md:p-6">
+        <CardContent className="flex p-2 md:p-6 justify-between flex-row items-center gap-4">
+          <CardTitle className="md:text-xl">{message.content}</CardTitle>
+          <AlertDialogBox  handleDeleteConfirm={handleDeleteConfirm} />
+        </CardContent>
+        <CardFooter className="text-sm md:text-base">{formattedDate(message.createdAt)}</CardFooter>
       </CardHeader>
-      <CardContent></CardContent>
     </Card>
   );
 };
