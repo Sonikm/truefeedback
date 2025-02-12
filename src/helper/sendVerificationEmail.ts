@@ -1,33 +1,3 @@
-import nodemailer from "nodemailer";
-
-export async function sendVerificationEmail(email, username, verifyCode) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      secure: true,
-      host: "smtp.gmail.com",
-      port: 465,
-      auth: {
-        user: process.env.MY_EMAIL,
-        pass: process.env.MY_PASS, // Use App Password here
-      },
-    });
-
-    await transporter.sendMail({
-      from: process.env.MY_EMAIL,
-      to: email,
-      subject: "Verification Code",
-      text: `Hello ${username}, your verification code is: ${verifyCode}`,
-    });
-
-    return { success: true, message: "Verification email sent." };
-  } catch (error) {
-    console.log("Error sending email:", error.message);
-    return { success: false, message: "Failed to send verification email." };
-  }
-}
-
-/*
 import { resend } from "@/lib/resend";
 import VerificationEmail from "../../emails/VerificationEmail";
 import { ApiResponse } from "../types/ApiResponse";
@@ -52,5 +22,32 @@ export async function sendVerificationEmail(
   }
 }
 
+/*
+import nodemailer from "nodemailer";
 
+export async function sendVerificationEmail(email, username, verifyCode) {
+  try {
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      service: "gmail",
+      host: "smtp.gmail.com",
+      auth: {
+        user: process.env.MY_EMAIL,
+        pass: process.env.MY_PASS, // Use App Password here
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.MY_EMAIL,
+      to: email,
+      subject: "Verification Code",
+      text: `Hello ${username}, your verification code is: ${verifyCode}`,
+    });
+
+    return { success: true, message: "Verification email sent." };
+  } catch (error) {
+    console.log("Error sending email:", error.message);
+    return { success: false, message: "Failed to send verification email." };
+  }
+}
 */
